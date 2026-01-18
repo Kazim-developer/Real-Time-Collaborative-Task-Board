@@ -4,13 +4,15 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Login from "./components/Login";
+import LoginForm from "./components/LoginForm";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RegisterForm from "./components/RegisterForm";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="/user/login" element={<Login />} />,
+      <Route path="/auth/user-register" element={<RegisterForm />} />,
+      <Route path="/auth/user-login" element={<LoginForm />} />,
       <Route
         path="/"
         element={
@@ -20,6 +22,7 @@ const router = createBrowserRouter(
         }
       />
       ,
+      <Route path="*" element={<h1>No such page found</h1>} />
     </Route>,
   ),
 );

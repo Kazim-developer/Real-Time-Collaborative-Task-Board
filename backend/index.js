@@ -6,8 +6,8 @@ const router = require("./routes/userLogin");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cookieParser());
 
 app.use(
@@ -17,8 +17,7 @@ app.use(
   }),
 );
 
-app.use(express.json());
-app.use(router);
+app.use("/api", router);
 
 connectToDB(
   "mongodb://adminUser:Admin106MongoDB@127.0.0.1:27017/boards-project?authSource=admin",

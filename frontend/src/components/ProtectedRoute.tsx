@@ -6,7 +6,7 @@ export default function ProtectedRoute({ children }) {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/auth/status", {
+    fetch("http://localhost:3000/api/logged-status", {
       credentials: "include",
     })
       .then((res) => {
@@ -22,7 +22,7 @@ export default function ProtectedRoute({ children }) {
   if (loading) return null;
 
   if (!authorized) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/auth/user-login" replace />;
   }
 
   return children;
