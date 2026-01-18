@@ -3,8 +3,12 @@ const app = express();
 const cors = require("cors");
 const connectToDB = require("./connection");
 const router = require("./routes/userLogin");
+const cookieParser = require("cookie-parser");
+require("dotenv").config();
 
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 app.use(
   cors({
@@ -22,4 +26,4 @@ connectToDB(
   console.log("mongoDB is connected");
 });
 
-app.listen(3000, () => console.log("backend server is running"));
+app.listen(process.env.PORT, () => console.log("backend server is running"));
