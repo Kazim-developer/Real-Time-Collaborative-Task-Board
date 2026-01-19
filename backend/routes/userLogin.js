@@ -3,6 +3,7 @@ const router = express.Router();
 const userModel = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const isAuthenticated = require("../middleware/auth");
 
 router.post("/user-login", async (req, res) => {
   const { email, password } = req.body;
@@ -27,15 +28,19 @@ router.post("/user-login", async (req, res) => {
     { expiresIn: "1h" },
   );
 
-  res.cookie("token ", token, { httpOnly: true, sameSite: "lax" });
+  res.cookie("token", token, { httpOnly: true, sameSite: "lax" });
 
-  res.json({
+  res.status(200).json({
     message: "Login Successful",
     user: {
       id: user._id,
       email: user.email,
     },
   });
+});
+
+router.get("/user-login", isAuthenticated, (req, res) => {
+  res.status(200).json({ authenticated: true, user: req.user });
 });
 
 module.exports = router;

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
   const postData = async () => {
     const res = await fetch("http://localhost:3000/api/user-register", {
       method: "POST",
@@ -16,6 +17,9 @@ export default function LoginForm() {
 
   const { mutate } = useMutation({
     mutationFn: postData,
+    onSuccess: () => {
+      navigate("/auth/user-login");
+    },
   });
 
   const handleSubmit = (e) => {

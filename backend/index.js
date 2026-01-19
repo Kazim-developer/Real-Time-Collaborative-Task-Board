@@ -2,9 +2,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const connectToDB = require("./connection");
-const router = require("./routes/userLogin");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
+
+const userLoginRouter = require("./routes/userLogin");
+const userRegisterRouter = require("./routes/userRegister");
+const userLoggedStatus = require("./routes/loggedStatus");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +20,9 @@ app.use(
   }),
 );
 
-app.use("/api", router);
+app.use("/api", userLoginRouter);
+app.use("/api", userRegisterRouter);
+app.use("/api", userLoggedStatus);
 
 connectToDB(
   "mongodb://adminUser:Admin106MongoDB@127.0.0.1:27017/boards-project?authSource=admin",

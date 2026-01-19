@@ -7,3 +7,5 @@ router.get("/logged-status", isAuthenticated, (req, res) => {
     user: req.user,
   });
 });
+
+module.exports = router;

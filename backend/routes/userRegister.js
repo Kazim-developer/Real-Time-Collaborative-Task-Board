@@ -9,9 +9,11 @@ router.post("/user-register", async (req, res) => {
   if (existingUser) {
     return res.status(409).json({ message: "Email already registered" });
   }
-  const user = await userModel.create({ email, hashedPassword });
+  const user = await userModel.create({ email, password: hashedPassword });
   res.status(201).json({
     message: "User registered",
     user: { id: user._id, email: user.email },
   });
 });
+
+module.exports = router;
