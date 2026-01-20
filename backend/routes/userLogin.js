@@ -28,7 +28,11 @@ router.post("/user-login", async (req, res) => {
     { expiresIn: "1h" },
   );
 
-  res.cookie("token", token, { httpOnly: true, sameSite: "lax" });
+  res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  });
 
   res.status(200).json({
     message: "Login Successful",
@@ -37,10 +41,6 @@ router.post("/user-login", async (req, res) => {
       email: user.email,
     },
   });
-});
-
-router.get("/user-login", isAuthenticated, (req, res) => {
-  res.status(200).json({ authenticated: true, user: req.user });
 });
 
 module.exports = router;

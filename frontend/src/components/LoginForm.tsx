@@ -1,41 +1,29 @@
 import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { NavLink } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [submitStatus, setSubmitStatus] = useState(false);
+  const navigate = useNavigate();
   const postData = async () => {
     const res = await fetch("http://localhost:3000/api/user-login", {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
     return res.json();
   };
 
-  const getloggedStatus = async () => {
-    const res = await fetch("http://localhost:3000/api/user-login");
-    if (!res.ok) {
-      throw new Error(`HTTP error, status code ${res.status}`);
-    }
-    const data = await res.json();
-    return { data, status: res.status };
-  };
-
-  const { data } = useQuery({
-    queryKey: ["user-login"],
-    queryFn: getloggedStatus,
-    enabled: submitStatus,
-  });
-
   const { mutate } = useMutation({
     mutationFn: postData,
+    onSuccess: () => {
+      navigate("/");
+    },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitStatus(true);
     mutate();
   };
 

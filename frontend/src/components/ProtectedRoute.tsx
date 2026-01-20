@@ -1,27 +1,26 @@
-import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
+const getloggedStatus = async () => {
+  const res = await fetch("http://localhost:3000/api/me", {
+    credentials: "include",
+  });
+  if (!res.ok) {
+    throw new Error(`HTTP error, status code ${res.status}`);
+  }
+  return res.json();
+};
 
 export default function ProtectedRoute({ children }) {
-  const [loading, setLoading] = useState(true);
-  const [authorized, setAuthorized] = useState(false);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["auth"],
+    queryFn: getloggedStatus,
+  });
 
-  useEffect(() => {
-    fetch("http://localhost:3000/api/logged-status", {
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          setAuthorized(true);
-        } else {
-          setAuthorized(false);
-        }
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  if (isLoading) return <p>Checking authentication ...</p>;
+  console.log(data);
 
-  if (loading) return null;
-
-  if (!authorized) {
+  if (isError || !data?.authenticated) {
     return <Navigate to="/auth/user-login" replace />;
   }
 
