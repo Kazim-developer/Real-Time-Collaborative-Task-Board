@@ -1,1 +1,38 @@
 @import "tailwindcss";
+
+.form-container {
+  border: 3px solid red;
+  width: 45%;
+  max-width: 500px;
+  min-width: 300px;
+  margin: 0 auto;
+  & button {
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    padding: 0.5em;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  & h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  & .message {
+    font-size: 1rem;
+    padding-left: 1em;
+  }
+  & form {
+    padding: 1em;
+    & input {
+      width: 100%;
+      margin: 0.5em 0em;
+      border: none;
+      border-bottom: 1px solid #aaa;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

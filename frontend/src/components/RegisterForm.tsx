@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { NavLink, useNavigate } from "react-router-dom";
+import clsx from "clsx";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [info, setInfo] = useState(false);
   const navigate = useNavigate();
   const postData = async () => {
     const res = await fetch("http://localhost:3000/api/user-register", {
@@ -20,6 +22,9 @@ export default function LoginForm() {
     onSuccess: () => {
       navigate("/auth/user-login");
     },
+    onError: () => {
+      setInfo(true);
+    },
   });
 
   const handleSubmit = (e) => {
@@ -30,6 +35,12 @@ export default function LoginForm() {
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
+        <h1>Register your account</h1>
+        {info && (
+          <p className="message">
+            Email already exists, choose another or login
+          </p>
+        )}
         <input
           type="text"
           placeholder="Enter your email"
@@ -48,11 +59,15 @@ export default function LoginForm() {
           }
         />
         <br />
-        <button type="submit">Register</button>
+        <button type="submit" className={clsx("bg-[#12d3f4]")}>
+          Register
+        </button>
       </form>
       <>
         <span>Already have an account yet ? </span>
-        <NavLink to="/auth/user-login">Login</NavLink>
+        <NavLink to="/auth/user-login" className={clsx("text-blue-600")}>
+          Login
+        </NavLink>
       </>
     </div>
   );
