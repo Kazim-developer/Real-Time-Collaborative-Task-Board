@@ -3,18 +3,19 @@ const router = express.Router();
 const userModel = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const isAuthenticated = require("../middleware/auth");
 
 router.post("/user-login", async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
-  const isMatched = await bcrypt.compare(password, user.password);
 
   if (!user) {
     return res
       .status(401)
       .json({ message: "Invalid Credentials, no such user exists" });
   }
+
+  const isMatched = await bcrypt.compare(password, user.password);
+
   if (!isMatched) {
     return res.status(401).json({ message: "Wrong Password, try again" });
   }
